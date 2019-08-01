@@ -1,43 +1,4 @@
-
-  	<div class="row">
-  	  <div class="col-xs-3">
-  	  	<h2>User info</h2>
-        <div class="field">
-         <%= attachment_image_tag @user, :profile_image, format:'jpeg', fallback: "no_image.jpg", size: "100x100" %>
-        </div>
-  	  	<table class="table">
-  	  	  <tbody>
-  	  	  	<tr>
-  	  	  	 <th>name</th>
-  	  	  	 <th><%= @user.name %></th>
-  	  	  	</tr>
-  	  	  	 <tr>
-  	  	  	 <th>introduction</th>
-  	  	  	 <th><%= @user.introduction %></th>
-  	  	  	</tr>
-  	  	  </tbody>
-  	  	</table>
-  	  	<div class="row">
-  	  	 <%= link_to  "", edit_user_path(@user.id), class:"col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_4368" %>
-  	  	</div>
-  	  	<h2>New book</h2>
-  	  	<%= form_for(@book_form) do |f| %>
-  	  	<div class="field row">
-  	  		<label for="
-  	  		book_title">Title</label>
-  	  	  <%= f.text_field :title, class:"col-xs-12 book_title" %>
-  	  	</div>
-  	  	<div class="field row">
-  	  		<label for="
-  	  		book_opinion">Opinion</label>
-  	  	  <%= f.text_area :body, class:"col-xs-12 book_body" %>
-  	  	</div>
-  	  	<div class="actions row">
-  	  	  <%= f.submit "Create", class:"btn btn-primary col-xs-12" %>
-  	  	</div>
-  	  	  <% end %>
-
-  	  </div>
+      <%= render 'template/sidemenu' %>
   	  <div class="col-xs-9" >
   	  	<h2>Books</h2>
   	  	<table class="table table-hover table-inverse">
@@ -53,13 +14,12 @@
   	  			<% @books.each do |f| %>
   	  			<tr>
   	  			<td>
-        <div class="field">
-          <%= link_to user_path(@user.id) do %>
-         <%= attachment_image_tag @user, :profile_image, format:'jpeg', fallback: "no_image.jpg", size: "40x40" %>
-        <% end %>
-        </div>
-
-  	  		    </td>
+            <div class="field">
+            <%= link_to user_path(@user.id) do %>
+            <%= attachment_image_tag @user, :profile_image, format:'jpeg', fallback: "no_image.jpg", size: "40x40" %>
+            </div>
+            <%end%>
+  	  		  </td>
   	  			<td>
   	  				<%= link_to f.title, book_path(f.id)%>
   	  			</td>
@@ -71,6 +31,41 @@
 
   	  		</tbody>
   	  	</table>
-        <%= paginate @books, class: "paginate"%>
+        <h3>いいねした投稿一覧</h3>
+        <table class="table table-hover table-inverse">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Opinion</th>
+              <th colspan="3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user.favorites.each do |favorite| %>
+            <tr>
+            <td>
+            <%= attachment_image_tag favorite.book.user, :profile_image, format:'jpeg', fallback: "no_image.jpg", size: "40x40" %>
+              </td>
+            <td>
+              <%= link_to favorite.book.title, book_path(favorite.book.id)%>
+            </td>
+            <td>
+              <%= favorite.book.body %>
+            </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <strong><%= @user.followings.count %>人フォローしています</strong>
+          <% @user.followings.each do |following|%>
+            <div class="col-xs-3">
+              <%= link_to user_path(following.following) do %>
+                <%= attachment_image_tag comment.user, :profile_image, format:'jpeg', fallback: "no_image.jpg", size: "50x50" %>
+                <%= following.user.name %>
+              <%end%>
+              </div>
+         <%end%>
+      <%= paginate @books, class: "paginate"%>
   	  </div>
   	</div>
