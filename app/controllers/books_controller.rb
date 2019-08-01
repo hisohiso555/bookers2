@@ -5,6 +5,7 @@ class BooksController < ApplicationController
   	@book = Book.new
   	@books = Book.all
   end
+
   def create
   	@book = Book.new(book_params)
   	@book.user_id = current_user.id
@@ -14,12 +15,15 @@ class BooksController < ApplicationController
      @user = current_user
      @books = Book.all
      render :action => "index"
+     end
   end
-  end
+
   def show
-  	@book = Book.find(params[:id])
-  	@book_form = Book.new
-    @book_comment = BookComment.new
+  	@book_find = Book.find(params[:id])
+    @user = @book_find.user
+  	@book = Book.new
+    @comment = BookComment.new
+
   end
 
   def edit

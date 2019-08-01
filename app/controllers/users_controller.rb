@@ -2,14 +2,14 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   def show
   	@user = User.find(params[:id])
-  	@book_form = Book.new
+  	@book = Book.new
   	@books = @user.books.page(params[:page]).reverse_order
   end
 
   def index
   	@user = current_user
   	@users = User.all
-  	@book_form = Book.new
+  	@book = Book.new
 
   end
 
